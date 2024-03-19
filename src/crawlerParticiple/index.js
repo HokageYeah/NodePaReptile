@@ -1,5 +1,13 @@
 import puppeteer from "puppeteer";
 import { spawn } from "child_process";
+import os from 'node:os'
+
+let executablePath = ''; // 初始化可执行路径变量
+let python = 'python'
+if (os.platform() === 'darwin') { // 检测当前操作系统是否为Mac
+  executablePath = '/Applications/Chromium.app/Contents/MacOS/Chromium'; // 设置Mac上谷歌浏览器的路径
+  python = 'python3'
+}
 
 // 获取命令传递过来的参数
 export const crawler = async () => {
@@ -7,6 +15,8 @@ export const crawler = async () => {
 
   const browser = await puppeteer.launch({
     headless: false, //取消无头模式
+    // 本地指定crom浏览器
+    executablePath
   });
 
   const page = await browser.newPage(); // 打开一个页面
@@ -48,7 +58,7 @@ export const crawler = async () => {
     console.log(articleList);
 
     //  调用python脚本进行中文分词 输出词云图
-    const pythonProcess = spawn("python", [
+    const pythonProcess = spawn(python, [
       "generateIndex.py",
       articleList.join(","),
       title,
