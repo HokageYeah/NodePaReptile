@@ -6,7 +6,11 @@ import { sendWechatMessage, getWeaterData } from "./src/weChat/index.js";
 const argv = process.argv.slice(2);
 // 执行爬虫、并且中分分词、生成词云图并且保存到相应文件夹
 if (argv.length > 1) {
-  crawler();
+  const btnText = argv[1];
+  const argument = argv[0];
+  if (argument == "crawler") {
+    crawler(btnText);
+  }
 } else if (argv.length == 1) {
   const argument = argv[0];
   if (argument == "email") {
